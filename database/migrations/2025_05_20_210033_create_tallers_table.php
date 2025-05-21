@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('tallers', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->text('descripcion')->nullable();
+            $table->text('descripcion');
             $table->enum('estado', ['No terminado', 'Terminado'])->default('No terminado');
-            $table->date('fecha_inicio')->nullable();
-            $table->date('fecha_fin')->nullable();
-            $table->foreignId('instructor_id')->constrained()->onDelete('cascade');
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->integer('cupo');
+            $table->foreignId('instructor_id')->constrained('instructors')->onDelete('cascade');
             $table->timestamps();
         });
     }

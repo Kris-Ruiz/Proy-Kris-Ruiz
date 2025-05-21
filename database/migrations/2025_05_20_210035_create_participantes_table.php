@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('taller_id')->constrained('tallers')->onDelete('cascade');
+            $table->enum('estado', ['activo', 'inactivo'])->default('activo');
             $table->date('fecha_inscripcion')->nullable();
             $table->timestamps();
         });

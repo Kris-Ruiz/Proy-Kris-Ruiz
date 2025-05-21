@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->text('descripcion')->nullable();
+            $table->integer('cantidad')->default(0);
             $table->foreignId('taller_id')->constrained('tallers')->onDelete('cascade');
             $table->timestamps();
         });

@@ -15,6 +15,32 @@
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
+                @if(auth()->user()->role === 'admin')
+                <flux:navlist.group :heading="__('Administración')" class="grid mt-2">
+                    <flux:navlist.item icon="users" :href="route('instructores.index')" :current="request()->routeIs('instructores.*')" wire:navigate>
+                        Instructores
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="academic-cap" :href="route('talleres.index')" :current="request()->routeIs('talleres.*')" wire:navigate>
+                        Talleres
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="cube" :href="route('materiales.index')" :current="request()->routeIs('materiales.*')" wire:navigate>
+                        Materiales
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="users" :href="route('participantes.admin.index')" :current="request()->routeIs('participantes.admin.*')" wire:navigate>
+                        Participantes
+                    </flux:navlist.item>
+                </flux:navlist.group>
+                @endif
+                @if(auth()->user()->role === 'user')
+                <flux:navlist.group :heading="__('Talleres')" class="grid mt-2">
+                    <flux:navlist.item icon="academic-cap" :href="route('talleres.index')" :current="request()->routeIs('talleres.*')" wire:navigate>
+                        Talleres disponibles
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-check" :href="route('participantes.index')" :current="request()->routeIs('participantes.inscripciones')" wire:navigate>
+                        Mis inscripciones
+                    </flux:navlist.item>
+                </flux:navlist.group>
+                @endif
             </flux:navlist>
 
             <flux:spacer />

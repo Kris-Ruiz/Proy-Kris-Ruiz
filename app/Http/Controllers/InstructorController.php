@@ -16,10 +16,48 @@ class InstructorController extends Controller
         return view('instructores.index', compact('instructores'));
     }
 
-    public function create() { /* ... */ }
-    public function store(Request $request) { /* ... */ }
-    public function show(Instructor $instructor) { /* ... */ }
-    public function edit(Instructor $instructor) { /* ... */ }
-    public function update(Request $request, Instructor $instructor) { /* ... */ }
-    public function destroy(Instructor $instructor) { /* ... */ }
+    public function create()
+    {
+        return view('instructores.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:instructors,email',
+        ]);
+
+        Instructor::create($validated);
+
+        return redirect()->route('instructores.index')->with('success', 'Instructor creado correctamente.');
+    }
+
+    public function show(Instructor $instructor)
+    {
+        return view('instructores.show', compact('instructor'));
+    }
+
+    public function edit(Instructor $instructor)
+    {
+        return view('instructores.edit', compact('instructor'));
+    }
+
+    public function update(Request $request, Instructor $instructor)
+    {
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:instructors,email,' . $instructor->id,
+        ]);
+
+        $instructor->update($validated);
+
+        return redirect()->route('instructores.index')->with('success', 'Instructor actualizado correctamente.');
+    }
+
+    public function destroy(Instructor $instructor)
+    {
+        $instructor->delete();
+        return redirect()->route('instructores.index')->with('success', 'Instructor eliminado correctamente.');
+    }
 }
