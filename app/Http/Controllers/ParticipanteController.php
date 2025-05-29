@@ -16,7 +16,7 @@ class ParticipanteController extends Controller
         $inscripciones = Participante::with(['taller.instructor'])
             ->where('user_id', auth()->id())
             ->get();
-            
+
         return view('participantes.index', compact('inscripciones'));
     }
 

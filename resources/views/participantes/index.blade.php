@@ -1,8 +1,6 @@
 <x-layouts.app :title="__('Mis Inscripciones')">
     <div class="p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Mis Talleres Inscritos</h1>
-        </div>
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Mis Inscripciones</h1>
 
         @if($inscripciones->isEmpty())
             <div class="text-center py-12">
@@ -20,21 +18,28 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Instructor</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Fechas</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                         @foreach($inscripciones as $inscripcion)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <tr>
                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">{{ $inscripcion->taller->nombre }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">{{ $inscripcion->taller->instructor->nombre }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                 {{ $inscripcion->taller->fecha_inicio->format('d/m/Y') }} - {{ $inscripcion->taller->fecha_fin->format('d/m/Y') }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-sm">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    {{ $inscripcion->estado === 'activo' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    {{ $inscripcion->estado === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                     {{ ucfirst($inscripcion->estado) }}
                                 </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium">
+                                <a href="{{ route('talleres.descargar-pdf', $inscripcion->taller_id) }}" 
+                                    class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                    Descargar PDF
+                                </a>
                             </td>
                         </tr>
                         @endforeach

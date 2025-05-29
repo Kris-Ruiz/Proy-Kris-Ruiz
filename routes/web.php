@@ -8,6 +8,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ParticipanteAdminController;
 use App\Http\Middleware\AdminMiddleware;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +34,8 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
         'update' => 'participantes.admin.update',
         'destroy' => 'participantes.admin.destroy',
     ]);
+
+    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
 });
 
 // Rutas para usuarios autenticados (usuarios normales)
@@ -47,7 +50,17 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('talleres', TallerController::class)->only(['index', 'show']);
     Route::post('talleres/{tallere}/inscribirse', [TallerController::class, 'inscribirse'])->name('talleres.inscribirse');
     Route::delete('talleres/{tallere}/desinscribirse', [TallerController::class, 'desinscribirse'])->name('talleres.desinscribirse');
-    Route::get('mis-inscripciones', [ParticipanteController::class, 'index'])->name('participantes.index');
+    Route::get('mis-inscripciones', [ParticipanteController::class, 'index'])->name('participantes.inscripciones');
+    Route::get('talleres/{tallere}/descargar-pdf', [TallerController::class, 'descargarPdf'])
+        ->name('talleres.descargar-pdf');
+
+    // Ruta de prueba para PDF
+    Route::get('/test-pdf', [TallerController::class, 'testPdf'])->name('test.pdf');
+
+    // Ruta de prueba para PDF de taller específico
+    Route::get('/test-taller-pdf', [TallerController::class, 'testTallerPdf'])->name('test.taller.pdf');
+
+    Route::get('/dashboard/user', [DashboardController::class, 'user'])->name('dashboard.user');
 });
 
 require __DIR__.'/auth.php';

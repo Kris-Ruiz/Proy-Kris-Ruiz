@@ -40,7 +40,15 @@ new #[Layout('components.layouts.auth')] class extends Component {
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // Redirigir al dashboard específico según el rol del usuario
+        $role = Auth::user()->role;
+        if ($role === 'admin') {
+            $this->redirect(route('dashboard.admin'), navigate: true);
+        } elseif ($role === 'user') {
+            $this->redirect(route('dashboard.user'), navigate: true);
+        } else {
+            $this->redirect(route('dashboard'), navigate: true);
+        }
     }
 
     /**
